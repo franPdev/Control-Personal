@@ -1,0 +1,16 @@
+# Node.js
+node_modules/
+
+# Archivos de entorno (variables sensibles)
+.env
+
+# Archivos de log
+*.log
+
+# Sistema operativo (archivos temporales)
+.DS_Store  # Para Mac
+Thumbs.db  # Para Windows
+
+# Directorios de build
+/dist
+/build
