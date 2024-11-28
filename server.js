@@ -1,11 +1,16 @@
 const express = require("express");
 const cors = require("cors");
 const connection = require("./dbConnection");
+const path = require('path');
 
 const app = express();
 
 app.use(cors({ origin: 'http://127.0.0.1:5500' }));
 app.use(express.json()); // Para analizar JSON
+
+// Servir archivos estáticos desde la carpeta 'public'
+app.use(express.static(path.join(__dirname, 'public')));
+
 
 // Ruta para asignar y guardar actividades y turnos
 app.post('/guardarTareaYTurno', (req, res) => {
