@@ -1,0 +1,315 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/materialize/1.0.0/css/materialize.min.css">
+    <link rel="stylesheet" href="estilos/estilos.css">
+    <link rel="icon" href="imagenes/Black And White Modern Vintage Retro Brand Logo.png" type="image/x-icon">
+     <!-- Iconos -->
+     <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.4/css/all.min.css" rel="stylesheet">
+
+    <title>Graficos</title>
+</head>
+<body>
+    
+      <!-- Navbar -->
+      <nav class="blue-grey">
+        <div class="nav-wrapper">
+            <a href="#" class="brand-logo">
+                <img src="imagenes/Black And White Modern Vintage Retro Brand Logo.png" alt="Logo" class="navbar-logo">
+            </a>
+            <!-- Botón de menú móvil con las tres barras -->
+            <a href="#" data-target="mobile-menu" class="sidenav-trigger"><i class="material-icons">Menu</i></a>
+            <ul id="nav-mobile" class="right hide-on-med-and-down">
+                <li><a href="index.html">Actividades</a></li>
+                <li><a href="empleados.html">Empleados</a></li>
+                <li><a href="graficos.html">Gráficos</a></li>
+                <li><a href="login.html">Cerrar sesión</a></li>
+            </ul>
+        </div>
+    </nav>
+
+    <!-- Sidenav para dispositivos móviles -->
+    <ul class="sidenav" id="mobile-menu">
+        <li><a href="index.html">Actividades</a></li>
+        <li><a href="empleados.html">Empleados</a></li>
+        <li><a href="graficos.html">Gráficos</a></li>
+        <li><a href="login.html">Cerrar sesión</a></li>
+    </ul>
+    <script>
+        document.addEventListener('DOMContentLoaded', function () {
+            var elems = document.querySelectorAll('.sidenav');
+            var instances = M.Sidenav.init(elems);
+        });
+
+    </script>
+
+   
+
+
+    <h1 class="center-align">Gráfico de Actividades</h1>
+
+    <br>
+
+
+     <!-- Contenedor para el gráfico de Actividades Más Asignadas -->
+     
+     <div class="container">
+        <div class="row">
+            <!-- Gráfico de Estado de Actividades (4 columnas) -->
+            <div class="col s12 m4">
+                <h5></h5>
+                <canvas id="estadoActividadChart"></canvas>
+            </div>
+            
+            <!-- Gráfico de Actividades Más Asignadas (4 columnas) -->
+            <div class="col s12 m8">
+                <h5></h5>
+                <canvas id="frecuenciaActividadChart"></canvas>
+            </div>
+        </div>
+    </div>
+
+       <br>
+
+    <!-- Contenedor para el gráfico de Horas de Trabajo por Empleado (div solo) -->
+    <div class="container">
+        <h5>Horas de Trabajo por Empleado</h5>
+        <canvas id="horasTrabajoChart"></canvas>
+    </div>
+
+
+    <br>
+
+<script> //Script para el Gráfico de Horas de Trabajo
+
+
+document.addEventListener('DOMContentLoaded', function() {
+    fetch('http://localhost:3001/obtenerHorasTrabajadas')
+        .then(response => response.json())
+        .then(data => {
+            const labels = data.map(item => `${item.nombre} ${item.apellido}`);
+            const horas = data.map(item => item.horas_trabajadas);
+
+            const ctx = document.getElementById('horasTrabajoChart').getContext('2d');
+            new Chart(ctx, {
+                type: 'line',
+                data: {
+                    labels: labels,
+                    datasets: [{
+                        label: 'Horas Trabajadas',
+                        data: horas,
+                        backgroundColor: 'rgba(75, 192, 192, 0.6)',
+                        borderColor: 'rgba(75, 192, 192, 1)',
+                        borderWidth: 1
+                    }]
+                },
+                options: {
+                    responsive: true,
+                    plugins: {
+                        legend: { display: true, position: 'top' },
+                        title: { display: true, text: 'Horas de Trabajo por Empleado' }
+                    },
+                    scales: {
+                        y: {
+                            beginAtZero: true,
+                            title: { display: true, text: 'Horas' }
+                        },
+                        x: {
+                            title: { display: true, text: 'Empleado' }
+                        }
+                    }
+                }
+            });
+        })
+        .catch(error => console.error('Error al obtener las horas trabajadas:', error));
+});
+
+
+</script>
+
+
+
+
+
+     
+    <script> //script para obtener actividades mas asignadas 
+        document.addEventListener('DOMContentLoaded', function() {
+            fetch('http://localhost:3001/obtenerFrecuenciaActividades')
+                .then(response => response.json())
+                .then(data => {
+                    const labels = data.map(item => item.descripcion);
+                    const frecuencias = data.map(item => item.frecuencia);
+        
+                    const ctx = document.getElementById('frecuenciaActividadChart').getContext('2d');
+                    new Chart(ctx, {
+                        type: 'bar',
+                        data: {
+                            labels: labels,
+                            datasets: [
+                                {
+                                    label: 'Frecuencia de Asignación',
+                                    data: frecuencias,
+                                    backgroundColor: 'rgba(54, 162, 235, 0.6)',
+                                    borderColor: 'rgba(54, 162, 235, 1)',
+                                    borderWidth: 1
+                                }
+                            ]
+                        },
+                        options: {
+                            responsive: true,
+                            plugins: {
+                                legend: { display: true, position: 'top' },
+                                title: { display: true, text: 'Actividades Más Asignadas' }
+                            },
+                            scales: {
+                                y: {
+                                    beginAtZero: true
+                                }
+                            }
+                        }
+                    });
+                })
+                .catch(error => console.error('Error al obtener la frecuencia de actividades:', error));
+        });
+        </script>
+
+   <script>// Script para el gráfico de estado de las actividades
+document.addEventListener('DOMContentLoaded', function() {
+    //Realizamos la peticion para obtener el estado de las actividades
+    fetch('http://localhost:3001/obtenerEstadoActividades')
+        .then(response => response.json())
+        .then(data => {
+            // Extrae los datos del objeto directamente
+            const labels = ['Realizadas', 'No Realizadas', 'En Progreso'];
+            const valores = [parseInt(data.realizadas), parseInt(data.no_realizadas), parseInt(data.en_progreso)];
+
+            const ctx = document.getElementById('estadoActividadChart').getContext('2d');
+            new Chart(ctx, {
+                type: 'doughnut', // Puedes cambiar a 'pie' si prefieres un gráfico de pastel
+                data: {
+                    labels: labels,
+                    datasets: [
+                        {
+                            label: 'Estado de Actividades',
+                            data: valores,
+                            backgroundColor: [
+                                'rgba(75, 192, 192, 0.6)',  // Color para 'Realizadas'
+                                'rgba(255, 99, 132, 0.6)',   // Color para 'No Realizadas'
+                                'rgba(255, 205, 86, 0.6)'    // Color para 'En Progreso'
+                            ],
+                            borderColor: [
+                                'rgba(75, 192, 192, 1)',
+                                'rgba(255, 99, 132, 1)',
+                                'rgba(255, 205, 86, 1)'
+                            ],
+                            borderWidth: 1
+                        }
+                    ]
+                },
+                options: {
+                    responsive: true,
+                    plugins: {
+                        legend: {
+                            display: true,
+                            position: 'top'
+                        },
+                        title: {
+                            display: true,
+                            text: 'Estado de Actividades'
+                        }
+                    }
+                }
+            });
+        })
+        .catch(error => console.error('Error al obtener el estado de actividades:', error));
+});
+
+
+
+
+</script>
+
+
+        
+
+        <!-- Pie de pagina -->
+
+        <footer class="page-footer blue-grey darken-4">
+            <div class="container">
+              <div class="row">
+                <!-- Logo y Descripción -->
+                <div class="col l3 s12">
+                  <img src="imagenes/Black And White Modern Vintage Retro Brand Logo.png" alt="Logo" class="brand-logo">
+                  <p class="grey-text text-lighten-4">Aquí puedes poner una breve descripción o información sobre tu sitio.</p>
+                </div>
+          
+                   <!-- Enlaces de navegación -->
+                   <div class="col l3 s12">
+                    <h5 class="white-text">Tecnologías usadas</h5>
+                    <ul class="tecnologias">
+                        <!-- Frontend -->
+                        <li>
+                            <i class="fab fa-html5" title="HTML5" style="font-size: 2rem; color: #E34F26;"></i>
+                        </li>
+                        <li>
+                            <i class="fab fa-css3-alt" title="CSS3" style="font-size: 2rem; color: #1572B6;"></i>
+                        </li>
+                        <li>
+                            <i class="fas fa-palette" title="Materialize" style="font-size: 2rem; color: #EE6E73;"></i>
+                        </li>
+                        <li>
+                            <i class="fab fa-js-square" title="JavaScript" style="font-size: 2rem; color: #F7DF1E;"></i>
+                        </li>
+                        <!-- Backend -->
+                        <li>
+                            <i class="fas fa-database" title="MySQL" style="font-size: 2rem; color: #4479A1;"></i>
+                        </li>
+                        <li>
+                            <i class="fab fa-node-js" title="Node.js" style="font-size: 2rem; color: #68A063;"></i>
+                        </li>
+                    </ul>
+                </div>
+          
+                <!-- Redes sociales -->
+                <div class="col l3 s12">
+                  <h5 class="white-text">Síguenos</h5>
+                  <ul>
+                    <li><a class="grey-text text-lighten-3" href="#!"><i class="fab fa-facebook"></i> Facebook</a></li>
+                    <li><a class="grey-text text-lighten-3" href="#!"><i class="fab fa-twitter"></i> Twitter</a></li>
+                    <li><a class="grey-text text-lighten-3" href="#!"><i class="fab fa-instagram"></i> Instagram</a></li>
+                    <li><a class="grey-text text-lighten-3" href="#!"><i class="fab fa-linkedin"></i> LinkedIn</a></li>
+                  </ul>
+                </div>
+          
+                <!-- Información adicional -->
+                <div class="col l3 s12">
+                  <h5 class="white-text">Información</h5>
+                  <ul>
+                    <li><a class="grey-text text-lighten-3" href="#!">Sobre nosotros</a></li>
+                    <li><a class="grey-text text-lighten-3" href="#!">Contacta con nosotros</a></li>
+                    <li><a class="grey-text text-lighten-3" href="#!">Política de privacidad</a></li>
+                    <li><a class="grey-text text-lighten-3" href="#!">Términos y condiciones</a></li>
+                  </ul>
+                </div>
+              </div>
+            </div>
+          
+            <!-- Copyright -->
+            <div class="footer-copyright">
+              <div class="container">
+                © 2024 Control de personal | Todos los derechos reservados.
+               
+              </div>
+            </div>
+          </footer>
+          
+
+ 
+
+
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/materialize/1.0.0/js/materialize.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+</body>
+</html>

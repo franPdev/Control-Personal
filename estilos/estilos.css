@@ -1,0 +1,114 @@
+/* Logo de la navbar */
+.navbar-logo {
+  width: 50px;
+  height: 50px;
+  object-fit: cover;
+  border-radius: 50%;
+  vertical-align: middle;
+  margin-top: -10px; 
+  margin-left: 20px;
+}
+/*
+/* Ajuste del logo en pantallas pequeñas */
+@media (max-width: 600px) {
+  .navbar-logo {
+    width: 40px;
+    height: 40px;
+  }
+}
+
+
+/* Estilos para cada actividad en el listado */
+#lista-actividades li {
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: space-between;
+  padding: 10px;
+  border: 1px solid #ddd;
+  border-radius: 5px;
+  background-color: #f9f9f9;
+  margin-bottom: 10px;
+}
+
+/* Estilo de los span con la clase 'negrita' */
+.negrita {
+  font-weight: bold;
+  color: #03a9f4;
+  margin-right: 5px;
+}
+
+/* Estilo para los valores (información de actividad) */
+#lista-actividades li span {
+  margin-right: 10px;
+  color: #333;
+}
+
+/* Estilo para el último span */
+#lista-actividades li span:last-child {
+  margin-right: 0;
+}
+
+/* Ajustes para pantallas más pequeñas */
+@media (max-width: 600px) {
+  #lista-actividades li {
+    flex-direction: column; /* Apilar los elementos en móviles */
+    align-items: flex-start;
+  }
+
+  #lista-actividades li span {
+    margin-right: 0;
+    margin-bottom: 5px;
+  }
+}
+
+/* Estilo torta de estado de actividades */
+.chart-round {
+  max-width: 100%;
+  width: 250px;
+  height: auto;
+  margin: auto;
+}
+
+/*Estilo para las Cards de los empleados*/ 
+.card {
+  box-shadow: 10px 10px 20px #9e9e9e, -10px -10px 20px rgb(139, 139, 139);
+  border-radius: 3px;
+}
+
+
+/* Ajuste de la torta en pantallas pequeñas */
+@media (max-width: 600px) {
+  .chart-round {
+    width: 200px;
+  }
+}
+
+/* Iconos en el footer */
+
+.tecnologias {
+  list-style: none;
+  display: flex;
+  gap: 10px;
+  justify-content: flex-start;
+  padding: 0;
+}
+
+.tecnologias li {
+  display: inline-block;
+}
+
+/* Estilo del logo en el footer */
+footer .brand-logo {
+  width: 80px;
+  height: 80px;
+  object-fit: cover;
+  border-radius: 50%;
+}
+
+/* Ajuste del logo en pantallas pequeñas */
+@media (max-width: 600px) {
+  footer .brand-logo {
+    width: 60px;
+    height: 60px;
+  }
+}

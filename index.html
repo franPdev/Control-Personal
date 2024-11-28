@@ -1,0 +1,301 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Asignar Tarea</title>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/materialize/1.0.0/css/materialize.min.css">
+    <link rel="stylesheet" href="estilos/estilos.css">
+    <link rel="icon" href="imagenes/Black And White Modern Vintage Retro Brand Logo.png" type="image/x-icon">
+     <!-- Iconos -->
+     <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.4/css/all.min.css" rel="stylesheet">
+</head>
+<body>
+
+   <!-- Navbar -->
+   <nav class="blue-grey">
+    <div class="nav-wrapper">
+        <a href="#" class="brand-logo">
+            <img src="imagenes/Black And White Modern Vintage Retro Brand Logo.png" alt="Logo" class="navbar-logo">
+        </a>
+        <!-- Botón de menú móvil con las tres barras -->
+        <a href="#" data-target="mobile-menu" class="sidenav-trigger"><i class="material-icons">Menu</i></a>
+        <ul id="nav-mobile" class="right hide-on-med-and-down">
+            <li><a href="index.html">Actividades</a></li>
+            <li><a href="empleados.html">Empleados</a></li>
+            <li><a href="graficos.html">Gráficos</a></li>
+            <li><a href="login.html">Cerrar sesión</a></li>
+        </ul>
+    </div>
+</nav>
+
+<!-- Sidenav para dispositivos móviles -->
+<ul class="sidenav" id="mobile-menu">
+    <li><a href="index.html">Actividades</a></li>
+    <li><a href="empleados.html">Empleados</a></li>
+    <li><a href="graficos.html">Gráficos</a></li>
+    <li><a href="login.html">Cerrar sesión</a></li>
+</ul>
+<script>
+    document.addEventListener('DOMContentLoaded', function () {
+        var elems = document.querySelectorAll('.sidenav');
+        var instances = M.Sidenav.init(elems);
+    });
+</script>
+
+
+   
+
+
+    <div class="container">
+        <div class="row">
+            <!-- Lista de Empleados -->
+            <div class="col s12 m6">
+                <h5>Lista de Empleados</h5>
+                <ul class="collection" id="lista-empleados">
+                    <!--li class="collection-item">
+                        <span>Juan Pérez</span>
+                        <label>
+                            <input type="checkbox" class="asignar" data-id="1">
+                            <span>Asignar</span>
+                        </label>
+                    </li-->
+                    <li class="collection-item">
+                        <span>Ana Gómez</span>
+                        <label>
+                            <input type="checkbox" class="asignar" data-id="1">
+                            <span>Asignar</span>
+                        </label>
+                    </li>
+                    <li class="collection-item">
+                        <span>Carlos López</span>
+                        <label>
+                            <input type="checkbox" class="asignar" data-id="2">
+                            <span>Asignar</span>
+                        </label>
+                    </li>
+                    <li class="collection-item">
+                        <span>María Pérez</span>
+                        <label>
+                            <input type="checkbox" class="asignar" data-id="3">
+                            <span>Asignar</span>
+                        </label>
+                    </li>
+                    <li class="collection-item">
+                        <span>Luis Fernández</span>
+                        <label>
+                            <input type="checkbox" class="asignar" data-id="4">
+                            <span>Asignar</span>
+                        </label>
+                    </li>
+                    <li class="collection-item">
+                        <span>Laura Gutiérrez</span>
+                        <label>
+                            <input type="checkbox" class="asignar" data-id="5">
+                            <span>Asignar</span>
+                        </label>
+                    </li>
+                    <li class="collection-item">
+                        <span>Sofía Martínez</span>
+                        <label>
+                            <input type="checkbox" class="asignar" data-id="6">
+                            <span>Asignar</span>
+                        </label>
+                    </li>
+                    <li class="collection-item">
+                        <span>Javier Ramírez</span>
+                        <label>
+                            <input type="checkbox" class="asignar" data-id="7">
+                            <span>Asignar</span>
+                        </label>
+                    </li>
+                    <li class="collection-item">
+                        <span>Valentina López</span>
+                        <label>
+                            <input type="checkbox" class="asignar" data-id="8">
+                            <span>Asignar</span>
+                        </label>
+                    </li>
+                </ul>
+            </div>
+    
+            <!-- Campo para escribir la actividad -->
+            <div class="col s12 m6">
+                <h5>Asignar Actividad</h5>
+                <div class="input-field">
+                    <textarea id="tarea" class="materialize-textarea" placeholder="Escribe la actividad"></textarea>
+                    <label for="tarea">Descripción de la Actividad</label>
+                </div>
+    
+                <!-- Campos para seleccionar el turno -->
+                <h5>Asignar Turno</h5>
+                <!-- Campo para la fecha del turno -->
+                <div class="input-field">
+                    <input type="date" id="fechaTurno" class="datepicker">
+                    <label for="fechaTurno">Fecha del Turno</label>
+                </div>
+    
+                <!-- Campo para el horario de inicio -->
+                <div class="input-field">
+                    <input type="time" id="horarioInicio" class="timepicker">
+                    <label for="horarioInicio">Hora de Inicio</label>
+                </div>
+    
+                <!-- Campo para el horario de fin -->
+                <div class="input-field">
+                    <input type="time" id="horarioFin" class="timepicker">
+                    <label for="horarioFin">Hora de Fin</label>
+                </div>
+            </div>
+        </div>
+    
+        <!-- Botón para guardar las actividades y turnos -->
+        <div class="row">
+            <div class="col s12">
+                <button id="guardar" class="btn waves-effect waves-light blue">Guardar Actividades y Turnos</button>
+            </div>
+        </div>
+    </div>
+    <br>
+    
+    <script>
+        const actividadesAsignadas = []; 
+
+        // Guardar actividades y turnos
+        document.getElementById('guardar').addEventListener('click', function() {
+            const checkboxes = document.querySelectorAll('.asignar:checked');
+            const descripcion = document.getElementById('tarea').value;
+
+            // Obtener la fecha, horario de inicio y fin del turno
+            const fechaTurno = document.getElementById('fechaTurno').value;
+            const horarioInicio = document.getElementById('horarioInicio').value;
+            const horarioFin = document.getElementById('horarioFin').value;
+
+            if (checkboxes.length === 0 || !descripcion || !fechaTurno || !horarioInicio || !horarioFin) {
+                alert('Por favor, completa todos los campos antes de guardar.');
+                return;
+            }
+
+            // Asignar actividad y turno a cada empleado seleccionado
+            checkboxes.forEach(checkbox => {
+                const empleado_id = checkbox.getAttribute('data-id');
+                actividadesAsignadas.push({ 
+                    empleado_id, 
+                    descripcion, 
+                    fecha: new Date().toISOString().split('T')[0],  // Fecha actual en formato 'YYYY-MM-DD'
+                    turno: {
+                        fecha: fechaTurno,
+                        horario_inicio: horarioInicio,
+                        horario_fin: horarioFin
+                    }
+                });
+            });
+
+            // Enviar las actividades asignadas al servidor
+            fetch('http://localhost:3001/guardarTareaYTurno', {
+                method: 'POST',
+                headers: { 'Content-Type': 'application/json' },
+                body: JSON.stringify(actividadesAsignadas) 
+            })
+            .then(response => {
+                if (!response.ok) {
+                    throw new Error('Network response was not ok');
+                }
+                return response.json();
+            })
+            .then(data => {
+                alert(data.mensaje);
+                actividadesAsignadas.length = 0; // Limpiar el array después de guardar
+                document.getElementById('tarea').value = ''; // Limpiar el campo de actividad
+                document.getElementById('fechaTurno').value = ''; // Limpiar fecha del turno
+                document.getElementById('horarioInicio').value = ''; // Limpiar horario de inicio
+                document.getElementById('horarioFin').value = ''; // Limpiar horario de fin
+
+                // Desmarcar todos los checkboxes
+                checkboxes.forEach(checkbox => {
+                    checkbox.checked = false;
+                });
+            })
+            .catch(error => {
+                console.error('Error:', error);
+                alert('Hubo un error al guardar las actividades y los turnos. Inténtalo de nuevo más tarde.');
+            });
+        });
+    </script>
+
+
+
+
+<footer class="page-footer blue-grey darken-4">
+    <div class="container">
+      <div class="row">
+        <!-- Logo y Descripción -->
+        <div class="col l3 s12">
+          <img src="imagenes/Black And White Modern Vintage Retro Brand Logo.png" alt="Logo" class="brand-logo">
+          <p class="grey-text text-lighten-4">Aquí puedes poner una breve descripción o información sobre tu sitio.</p>
+        </div>
+  
+         <!-- Enlaces de navegación -->
+         <div class="col l3 s12">
+            <h5 class="white-text">Tecnologías usadas</h5>
+            <ul class="tecnologias">
+                <!-- Frontend -->
+                <li>
+                    <i class="fab fa-html5" title="HTML5" style="font-size: 2rem; color: #E34F26;"></i>
+                </li>
+                <li>
+                    <i class="fab fa-css3-alt" title="CSS3" style="font-size: 2rem; color: #1572B6;"></i>
+                </li>
+                <li>
+                    <i class="fas fa-palette" title="Materialize" style="font-size: 2rem; color: #EE6E73;"></i>
+                </li>
+                <li>
+                    <i class="fab fa-js-square" title="JavaScript" style="font-size: 2rem; color: #F7DF1E;"></i>
+                </li>
+                <!-- Backend -->
+                <li>
+                    <i class="fas fa-database" title="MySQL" style="font-size: 2rem; color: #4479A1;"></i>
+                </li>
+                <li>
+                    <i class="fab fa-node-js" title="Node.js" style="font-size: 2rem; color: #68A063;"></i>
+                </li>
+            </ul>
+        </div>
+  
+        <!-- Redes sociales -->
+        <div class="col l3 s12">
+          <h5 class="white-text">Síguenos</h5>
+          <ul>
+            <li><a class="grey-text text-lighten-3" href="#!"><i class="fab fa-facebook"></i> Facebook</a></li>
+            <li><a class="grey-text text-lighten-3" href="#!"><i class="fab fa-twitter"></i> Twitter</a></li>
+            <li><a class="grey-text text-lighten-3" href="#!"><i class="fab fa-instagram"></i> Instagram</a></li>
+            <li><a class="grey-text text-lighten-3" href="#!"><i class="fab fa-linkedin"></i> LinkedIn</a></li>
+          </ul>
+        </div>
+  
+        <!-- Información adicional -->
+        <div class="col l3 s12">
+          <h5 class="white-text">Información</h5>
+          <ul>
+            <li><a class="grey-text text-lighten-3" href="#!">Sobre nosotros</a></li>
+            <li><a class="grey-text text-lighten-3" href="#!">Contacta con nosotros</a></li>
+            <li><a class="grey-text text-lighten-3" href="#!">Política de privacidad</a></li>
+            <li><a class="grey-text text-lighten-3" href="#!">Términos y condiciones</a></li>
+          </ul>
+        </div>
+      </div>
+    </div>
+  
+    <!-- Copyright -->
+    <div class="footer-copyright">
+      <div class="container">
+        © 2024 Control de personal | Todos los derechos reservados.
+        
+      </div>
+    </div>
+  </footer>
+  
+
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/materialize/1.0.0/js/materialize.min.js"></script>
+</body>
+</html>

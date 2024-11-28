@@ -1,0 +1,277 @@
+<!DOCTYPE html>
+<html lang="es">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Empleados</title>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/materialize/1.0.0/css/materialize.min.css">
+    <link rel="stylesheet" href="estilos/estilos.css">
+    <link rel="icon" href="imagenes/Black And White Modern Vintage Retro Brand Logo.png" type="image/x-icon">
+    <!-- Iconos -->
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.4/css/all.min.css" rel="stylesheet">
+</head>
+
+<body>
+
+
+
+    <!-- Navbar -->
+    <nav class="blue-grey">
+        <div class="nav-wrapper">
+            <a href="#" class="brand-logo">
+                <img src="imagenes/Black And White Modern Vintage Retro Brand Logo.png" alt="Logo" class="navbar-logo">
+            </a>
+            <!-- Botón de menú móvil con las tres barras -->
+            <a href="#" data-target="mobile-menu" class="sidenav-trigger"><i class="material-icons">Menu</i></a>
+            <ul id="nav-mobile" class="right hide-on-med-and-down">
+                <li><a href="index.html">Actividades</a></li>
+                <li><a href="empleados.html">Empleados</a></li>
+                <li><a href="graficos.html">Gráficos</a></li>
+                <li><a href="login.html">Cerrar sesión</a></li>
+            </ul>
+        </div>
+    </nav>
+
+    <!-- Sidenav para dispositivos móviles -->
+    <ul class="sidenav" id="mobile-menu">
+        <li><a href="index.html">Actividades</a></li>
+        <li><a href="empleados.html">Empleados</a></li>
+        <li><a href="graficos.html">Gráficos</a></li>
+        <li><a href="login.html">Cerrar sesión</a></li>
+    </ul>
+    <script>
+        document.addEventListener('DOMContentLoaded', function () {
+            var elems = document.querySelectorAll('.sidenav');
+            var instances = M.Sidenav.init(elems);
+        });
+    </script>
+
+
+
+
+
+    <div class="container">
+        <!-- Cards de Empleados -->
+        <div class="row" id="empleados-container">
+            <!-- Las cards se generarán aquí -->
+        </div>
+    </div>
+
+    <!-- Modal de Reporte -->
+    <div id="modal-reporte" class="modal">
+        <div class="modal-content">
+            <h4>Reporte de Actividades</h4>
+            <ul id="lista-actividades"></ul>
+        </div>
+        <div class="modal-footer">
+            <a href="#!" class="modal-close btn-flat">Cerrar</a>
+        </div>
+    </div>
+
+    <script>
+        // Inicialización del modal
+        document.addEventListener('DOMContentLoaded', function () {
+            var elems = document.querySelectorAll('.modal');
+            M.Modal.init(elems);
+        });
+
+        // Función para generar un estado aleatorio
+        function generarEstadoAleatorio() {
+            const estados = ['realizada', 'no realizada', 'en progreso'];
+            const indiceAleatorio = Math.floor(Math.random() * estados.length);
+            return estados[indiceAleatorio];
+        }
+
+      // Función para abrir el modal y cargar las actividades del empleado
+// Función para abrir el modal y cargar las actividades del empleado
+function abrirReporte(empleadoId) {
+    fetch(`http://127.0.0.1:3001/obtenerReporte/${empleadoId}`)
+        .then(response => {
+            if (!response.ok) {
+                throw new Error('Network response was not ok ' + response.status + ' ' + response.statusText);
+            }
+            return response.json();
+        })
+        .then(data => {
+            const listaActividades = document.getElementById('lista-actividades');
+            listaActividades.innerHTML = ''; // Limpiar lista
+
+            // Verificar si existe el mensaje en el objeto data
+            if (data.mensaje) {
+                listaActividades.innerHTML = `<li>${data.mensaje}</li>`;
+            } else {
+                // Renderizar las actividades
+                data.forEach(item => {
+                    const li = document.createElement('li');
+
+                    // Si la fecha está en el formato original (YYYY-MM-DDTHH:MM:SS), la convertimos
+                    let fechaFormateada;
+                    if (item.fecha) {
+                        const fecha = new Date(item.fecha); // Convertimos el string en un objeto Date
+                        // Extraemos y formateamos la fecha
+                        fechaFormateada = fecha.toLocaleDateString('es-AR', {
+                            year: 'numeric',
+                            month: '2-digit',
+                            day: '2-digit'
+                        });
+                    } else {
+                        fechaFormateada = 'Fecha no disponible';
+                    }
+
+                    // Mostrar los datos con la fecha formateada
+                    li.innerHTML = `
+                        <span class="negrita">Actividad:</span> ${item.descripcion} | 
+                        <span class="negrita">Fecha:</span> ${fechaFormateada} | 
+                        <span class="negrita">Inicio:</span> ${item.horario_inicio} | 
+                        <span class="negrita">Fin:</span> ${item.horario_fin} | 
+                        <span class="negrita">Estado:</span> ${item.estado_actividad}
+                    `;
+                    listaActividades.appendChild(li);
+                });
+            }
+
+            const modalInstance = M.Modal.getInstance(document.getElementById('modal-reporte'));
+            modalInstance.open();
+        })
+        .catch(error => {
+            console.error('Error al obtener el reporte:', error);
+            alert('Error al obtener el reporte del empleado: ' + error.message);
+        });
+}
+
+
+ // Función para cargar los empleados
+function cargarEmpleados() {
+    fetch('http://127.0.0.1:3001/obtenerEmpleados') 
+        .then(response => {
+            if (!response.ok) {
+                throw new Error('Network response was not ok ' + response.statusText);
+            }
+            return response.json();
+        })
+        .then(empleados => {
+            const empleadosContainer = document.getElementById('empleados-container');
+            if (!empleadosContainer) {
+                console.error('El contenedor de empleados no fue encontrado');
+                return;
+            }
+            
+            empleadosContainer.innerHTML = ''; // Limpiar contenedor de empleados
+            empleados.forEach(empleado => {
+                const card = document.createElement('div');
+                card.classList.add('col', 's12', 'm6', 'l4');
+                card.innerHTML = `
+                    <div class="card">
+                        <div class="card-content">
+                            <span class="card-title">${empleado.nombre} ${empleado.apellido}</span>
+                            <p>Puesto: ${empleado.puesto}</p>
+                        </div>
+                        <div class="card-action">
+                            <a href="#modal-reporte" class="btn modal-trigger btn-generar-reporte blue" data-id="${empleado.id}">Generar reporte</a>
+                        </div>
+                    </div>
+                `;
+                empleadosContainer.appendChild(card);
+            });
+
+            // Delegación de eventos para "Generar reporte"
+            empleadosContainer.addEventListener('click', event => {
+                if (event.target.classList.contains('btn-generar-reporte')) {
+                    const empleadoId = event.target.getAttribute('data-id');
+                    abrirReporte(empleadoId);
+                }
+            });
+        })
+        .catch(error => console.error('Error al cargar empleados:', error.message));
+}
+
+        // Cargar empleados al cargar la página
+        document.addEventListener('DOMContentLoaded', cargarEmpleados);
+    </script>
+
+
+    <footer class="page-footer blue-grey darken-4">
+        <div class="container">
+            <div class="row">
+                <!-- Logo y Descripción -->
+                <div class="col l3 s12">
+                    <img src="imagenes/Black And White Modern Vintage Retro Brand Logo.png" alt="Logo"
+                        class="brand-logo">
+                    <p class="grey-text text-lighten-4">Aplicacion web para asignar tareas y turnos y controlar las actividades de cada empleado.</p>
+                </div>
+
+                <!-- Enlaces de navegación -->
+                <div class="col l3 s12">
+                    <h5 class="white-text">Tecnologías usadas</h5>
+                    <ul class="tecnologias">
+                        <!-- Frontend -->
+                        <li>
+                            <i class="fab fa-html5" title="HTML5" style="font-size: 2rem; color: #E34F26;"></i>
+                        </li>
+                        <li>
+                            <i class="fab fa-css3-alt" title="CSS3" style="font-size: 2rem; color: #1572B6;"></i>
+                        </li>
+                        <li>
+                            <i class="fas fa-palette" title="Materialize" style="font-size: 2rem; color: #EE6E73;"></i>
+                        </li>
+                        <li>
+                            <i class="fab fa-js-square" title="JavaScript" style="font-size: 2rem; color: #F7DF1E;"></i>
+                        </li>
+                        <!-- Backend -->
+                        <li>
+                            <i class="fas fa-database" title="MySQL" style="font-size: 2rem; color: #4479A1;"></i>
+                        </li>
+                        <li>
+                            <i class="fab fa-node-js" title="Node.js" style="font-size: 2rem; color: #68A063;"></i>
+                        </li>
+                    </ul>
+                </div>
+
+
+                <!-- Redes sociales -->
+                <div class="col l3 s12">
+                    <h5 class="white-text">Síguenos</h5>
+                    <ul>
+                        <li><a class="grey-text text-lighten-3" href="#!"><i class="fab fa-facebook"></i> Facebook</a>
+                        </li>
+                        <li><a class="grey-text text-lighten-3" href="#!"><i class="fab fa-twitter"></i> Twitter</a>
+                        </li>
+                        <li><a class="grey-text text-lighten-3" href="#!"><i class="fab fa-instagram"></i> Instagram</a>
+                        </li>
+                        <li><a class="grey-text text-lighten-3" href="#!"><i class="fab fa-linkedin"></i> LinkedIn</a>
+                        </li>
+                    </ul>
+                </div>
+
+                <!-- Información adicional -->
+                <div class="col l3 s12">
+                    <h5 class="white-text">Información</h5>
+                    <ul>
+                        <li><a class="grey-text text-lighten-3" href="#!">Sobre nosotros</a></li>
+                        <li><a class="grey-text text-lighten-3" href="#!">Contacta con nosotros</a></li>
+                        <li><a class="grey-text text-lighten-3" href="#!">Política de privacidad</a></li>
+                        <li><a class="grey-text text-lighten-3" href="#!">Términos y condiciones</a></li>
+                    </ul>
+                </div>
+            </div>
+        </div>
+
+        <!-- Copyright -->
+        <div class="footer-copyright">
+            <div class="container">
+                © 2024 Control de personal | Todos los derechos reservados.
+
+            </div>
+        </div>
+    </footer>
+
+
+
+
+
+
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/materialize/1.0.0/js/materialize.min.js"></script>
+</body>
+
+</html>
